@@ -7,9 +7,8 @@ export const middleware = async (request) => {
   const isPath = (path) => pathname.startsWith(path);
   try {
     let cookie = request.cookies.get("jwt-token")?.value;
-    // console.log("cookie", cookie);
     if (!cookie || !cookie.startsWith("Bearer")) {
-      new Error("Invalid token");
+      throw new Error("Invalid token");
     }
     const secret = new TextEncoder().encode(process.env.jwt_secret);
     await jwtVerify(cookie.split("Bearer ")[1], secret);
@@ -18,11 +17,15 @@ export const middleware = async (request) => {
     }
     return NextResponse.next();
   } catch (error) {
+    if (isPath("/login") || isPath("/signup")) {
+      return NextResponse.next();
+    }
     return NextResponse.redirect(
       new URL(`/login?redirectUrl=${pathname}`, request.url)
     );
   }
 };
+
 
 // See "Matching Paths" below to learn more
 export const config = {

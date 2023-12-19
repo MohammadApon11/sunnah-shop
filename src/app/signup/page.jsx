@@ -1,7 +1,6 @@
 import LoginSvg from "@/components/LoginSvg";
 import SignupForm from "./SignupForm";
 
-
 export const metadata = {
   title: "Signup - Easy Shop",
 };
