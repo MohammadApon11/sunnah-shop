@@ -19,7 +19,7 @@ const GoogleLogin = ({ from }) => {
       replace(from)
     } catch (error) {
       toast.dismiss(toastId);
-      toast.error("User not logged in");
+      toast.error(error.message);
     }
   };
   return (
