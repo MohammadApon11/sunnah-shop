@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import DbConnect from "./DbConnect";
 import "server-only";
 
@@ -22,4 +21,14 @@ export const getProductByIdFromDb = async (id) => {
     _id: id,
   };
   return productsCollection.findOne(query);
+};
+
+export const getProductByIdsFromDb = async (ids = []) => {
+  const db = await DbConnect();
+  const productsCollection = db.collection("products");
+  const idsWithId = ids.map((id) => id);
+  const query = {
+    _id: { $in: idsWithId },
+  };
+  return productsCollection.find(query).toArray();
 };
